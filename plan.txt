@@ -1,7 +1,7 @@
-# План реализации проекта RefPerf
+# План реализации проекта cpp-reference-benchmark
 
 ## 1. Создание репозитория на GitHub
-- Завести новый публичный репозиторий с названием `refperf`.
+- Завести новый публичный репозиторий с названием `cpp-reference-benchmark`.
 - Добавить краткое описание: "Performance benchmarks and examples demonstrating C++ references and move semantics".
 - Инициализировать с README.md и лицензией MIT/Apache 2.0.
 - Склонировать репозиторий локально.
@@ -19,7 +19,7 @@ cpp-references-benchmark/
 │ ├── buffer_benchmark.cpp
 │ ├── json_parser_benchmark.cpp
 │ └── main_benchmark.cpp
-├── include/refperf/
+├── include/cpp-reference-benchmark/
 │ ├── buffer.hpp
 │ └── json_utils.hpp
 ├── src/
@@ -43,7 +43,7 @@ cpp-references-benchmark/
   - Подключить подкаталоги `src`, `tests`, `benchmarks`, `examples`.
 
 ## 4. Реализация основной библиотеки
-### 4.1. Заголовочные файлы (`include/refperf/`)
+### 4.1. Заголовочные файлы (`include/cpp-reference-benchmark/`)
 - **`buffer.hpp`**: объявления функций:
   - `sum_by_value` (принимает вектор по значению).
   - `sum_by_const_ref` (принимает const ссылку).
@@ -60,7 +60,7 @@ cpp-references-benchmark/
 - В функциях парсинга JSON реализовать простейший поиск подстрок для имитации извлечения поля.
 
 ### 4.3. `src/CMakeLists.txt`
-- Создать статическую библиотеку `refperf_lib`.
+- Создать статическую библиотеку `cpp-reference-benchmark_lib`.
 - Указать публичную директорию include.
 
 ## 5. Написание модульных тестов
@@ -80,7 +80,7 @@ cpp-references-benchmark/
 ## 6. Реализация бенчмарков
 ### 6.1. Настройка Google Benchmark
 - В `benchmarks/CMakeLists.txt` подключить Google Benchmark через FetchContent.
-- Создать исполняемый файл `refperf_benchmarks`.
+- Создать исполняемый файл `cpp-reference-benchmark_benchmarks`.
 
 ### 6.2. Бенчмарк-кейсы
 - **`buffer_benchmark.cpp`**:
