@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(ENABLE_TESTS "Enable building tests" ON)
-option(ENABLE_BENCHMARKS "Enable building benchmakrs" OFF)
+option(ENABLE_BENCHMARKS "Enable building benchmakrs" ON)
 option(ENABLE_EXAMPLES "Enable building examples" OFF)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
