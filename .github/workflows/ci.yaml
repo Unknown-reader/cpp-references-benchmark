@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [g++, clang++]
+    steps:
+    - uses: action/checkout@v4
+    - name: Configure
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+    - name: Build
+      run: cmake --build build --config Debug
+    - name: Test
+      run: cd build && ctest --output-on-failure
+    - name: Dry-run benchmarks
+      run: ./build/benchmark/cpp-reference-benchmark_benchmarks --benchmark_min_time=0.01
