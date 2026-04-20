@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(ENABLE_TESTS "Building tests" OFF)
+option(ENABLE_TESTS "Building tests" ON)
 option(ENABLE_BENCHMARKS "Build benchmakrs" OFF)
 option(ENABLE_EXAMPLES "Building examples" OFF)
 

@@ -20,5 +20,5 @@ jobs:
       run: cmake --build build --config Debug
     - name: Test
       run: cd build && ctest --output-on-failure
-    #- name: Dry-run benchmarks
-    #  run: ./build/benchmark/cpp-reference-benchmark_benchmarks --benchmark_min_time=0.01
+    - name: Dry-run benchmarks
+      run: ./build/benchmark/cpp-reference-benchmark_benchmarks --benchmark_min_time=0.01

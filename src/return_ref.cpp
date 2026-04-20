@@ -13,9 +13,4 @@ const std::string& get_name(const Person& p) {
     return p.name;
 }
 
-const int& dangling_reference_example() {
-    int local_var = 42;
-    return local_var;
-}
-
 } // namespace cpp_ref_bench

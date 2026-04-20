@@ -17,7 +17,4 @@ int& element_at(std::vector<int>& vec, std::size_t index);
 // Возвращает константную ссылку на имя человека
 const std::string& get_name(const Person& p);
 
-// ОПАСНО! Демонстрация висячей ссылки
-const int& dangling_reference_example();
-
 } // namespace cpp_ref_bench
