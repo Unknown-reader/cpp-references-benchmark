@@ -10,21 +10,21 @@ namespace cpp_ref_bench {
  *        При копировании выводит сообщение.
  */
 class BigObject {
-public:
-    BigObject();
+    public:
+        BigObject();
 
-    BigObject(const BigObject& other);
+        BigObject(const BigObject& other);
 
-    BigObject(BigObject&& other) = default;
+        BigObject(BigObject&& other) = default;
 
-    BigObject& operator=(const BigObject& other);
+        BigObject& operator=(const BigObject& other);
 
-    long long sum() const;
+        long long sum() const;
 
-    std::size_t size() const;
+        std::size_t size() const;
 
-private:
-    std::vector<int> data_;
+    private:
+        std::vector<int> data_;
 };
 
 } // namespace cpp_ref_bench

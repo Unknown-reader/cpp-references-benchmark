@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(googlebenchmark)
 
 set(BENCHMARK_SOURCES
     pass_by_benchmark.cpp
-    main_benchmakr.cpp)
+    main_benchmark.cpp)
 
 add_executable(cpp-reference-benchmark_benchmarks ${BENCHMARK_SOURCES})
 

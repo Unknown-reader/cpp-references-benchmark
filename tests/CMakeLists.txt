@@ -13,7 +13,7 @@ set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 set(TEST_SOURCES
-    test_value_vs_ref.cpp
+    test_copy_vs_ref.cpp
     test_return_ref.cpp
 )
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <string>
-#include "cpp-reference-benchmark/value_vs_ref.hpp"
+#include "cpp-reference-benchmark/copy_vs_ref.hpp"
 #include "cpp-reference-benchmark/BigObject.hpp"
 
 using namespace cpp_ref_bench;

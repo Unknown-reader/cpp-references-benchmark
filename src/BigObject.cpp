@@ -11,13 +11,13 @@ BigObject::BigObject() : data_(1'000'000, 0) {
 }
 
 BigObject::BigObject(const BigObject& other) : data_(other.data_) {
-    std::cout << "[BigObject] Copy constructor called (expensive!)\n";
+    // std::cout << "[BigObject] Copy constructor called (expensive!)\n";
 }
 
 BigObject& BigObject::operator=(const BigObject& other) {
     if (this != &other) {
         data_ = other.data_;
-        std::cout << "[BigObject] Copy assignment called (expensive!)\n";
+        // std::cout << "[BigObject] Copy assignment called (expensive!)\n";
     }
 
     return *this;
