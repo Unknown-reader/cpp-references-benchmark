@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""
+Скрипт для парсинга вывода Google Benchmark и генерации сравнительного графика.
+Запускается из CI после прогона бенчмарков.
+"""
+
+import sys
+import re
+import matplotlib.pyplot as plt
+import numpy as np
+from pathlib import Path
+
+def parse_benchmark_output(output_text):
+    """Извлекает имя бенчмарка и CPU time из текстового вывода."""
+    results = {}
+    pattern = r'^(\S+)\s+(\d+)\s+ns\s+(\d+)\s+ns'
+    for line in output_text.splitlines():
+        match = re.match(pattern, line)
+        if match:
+            name = match.group(1)
+            cpu_time = float(match.group(2))  # CPU time в наносекундах
+            results[name] = cpu_time
+    return results
+
+def create_plot(results):
+    """Создаёт столбчатую диаграмму с логарифмической шкалой."""
+    pairs = [
+        ('Vector 1k', 'BM_SumVectorPassedByCopy/1000', 'BM_SumVectorPassedByConstRef/1000'),
+        ('Vector 1M', 'BM_SumVectorPassedByCopy/1000000', 'BM_SumByConstRef_Vector/1000000'),
+        ('Short String', 'BM_ProcessShortStrPassedByCopy', 'BM_ProcessShortStrPassedByConstRef'),
+        ('Long String', 'BM_ProcessLongStrPassedByCopy', 'BM_ProcessLongStrPassedByConstRef'),
+        ('BigObject', 'BM_BigObjectCopy', 'BM_BigObjectConstRef'),
+    ]
+    
+    labels = []
+    values_copy = []
+    values_ref = []
+    
+    for label, copy_key, ref_key in pairs:
+        if copy_key in results and ref_key in results:
+            labels.append(label)
+            values_copy.append(results[copy_key])
+            values_ref.append(results[ref_key])
+    
+    if not labels:
+        print("No benchmark data found!")
+        return False
+    
+    x = np.arange(len(labels))
+    width = 0.35
+    
+    fig, ax = plt.subplots(figsize=(12, 6))
+    bars1 = ax.bar(x - width/2, values_copy, width, label='Pass by Value', 
+                   color='#e74c3c', edgecolor='#c0392b', linewidth=0.5)
+    bars2 = ax.bar(x + width/2, values_ref, width, label='Pass by const&',
+                   color='#2ecc71', edgecolor='#27ae60', linewidth=0.5)
+    
+    ax.set_ylabel('CPU Time (nanoseconds)')
+    ax.set_title('Performance: Pass-by-value vs Pass-by-const-ref\n(lower is better, log scale)')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=10)
+    ax.legend(fontsize=10)
+    ax.set_yscale('log')
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    
+    for bar in bars1:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height * 1.15,
+                f'{height:,.0f}', ha='center', va='bottom', fontsize=7, rotation=90)
+    for bar in bars2:
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height * 1.15,
+                f'{height:,.0f}', ha='center', va='bottom', fontsize=7, rotation=90)
+    
+    plt.tight_layout()
+    output_path = Path('benchmark_chart.png')
+    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    print(f"Chart saved to {output_path}")
+    return True
+
+def main():
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], 'r') as f:
+            output = f.read()
+    else:
+        output = sys.stdin.read()
+    
+    results = parse_benchmark_output(output)
+    if not results:
+        print("Error: No benchmark results found in input", file=sys.stderr)
+        sys.exit(1)
+    
+    print(f"Parsed {len(results)} benchmark results")
+    if create_plot(results):
+        print("Plot generated successfully")
+    else:
+        print("Failed to generate plot", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()
