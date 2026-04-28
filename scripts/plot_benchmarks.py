@@ -18,18 +18,18 @@ def parse_benchmark_output(output_text):
         match = re.match(pattern, line)
         if match:
             name = match.group(1)
-            cpu_time = float(match.group(2))  # CPU time в наносекундах
+            cpu_time = float(match.group(2))
             results[name] = cpu_time
     return results
 
 def create_plot(results):
-    """Создаёт столбчатую диаграмму с логарифмической шкалой."""
+    """Создает столбчатую диаграмму с логарифмической шкалой."""
     pairs = [
-        ('Vector 1k', 'BM_SumVectorPassedByCopy/1000', 'BM_SumVectorPassedByConstRef/1000'),
-        ('Vector 1M', 'BM_SumVectorPassedByCopy/1000000', 'BM_SumByConstRef_Vector/1000000'),
-        ('Short String', 'BM_ProcessShortStrPassedByCopy', 'BM_ProcessShortStrPassedByConstRef'),
-        ('Long String', 'BM_ProcessLongStrPassedByCopy', 'BM_ProcessLongStrPassedByConstRef'),
-        ('BigObject', 'BM_BigObjectCopy', 'BM_BigObjectConstRef'),
+        ('Vector 1k', 'SumVectorFixture/BM_SumVectorPassedByCopy/1000', 'SumVectorFixture/BM_SumVectorPassedByConstRef/1000'),
+        ('Vector 1M', 'SumVectorFixture/BM_SumVectorPassedByCopy/1000000', 'SumVectorFixture/BM_SumVectorPassedByConstRef/1000000'),
+        ('Short String', 'ShortStrProcessFixture/BM_ProcessShortStrPassedByCopy', 'ShortStrProcessFixture/BM_ProcessShortStrPassedByConstRef'),
+        ('Long String', 'LongStrProcessFixture/BM_ProcessLongStrPassedByCopy', 'LongStrProcessFixture/BM_ProcessLongStrPassedByConstRef'),
+        ('BigObject', 'BigObjectProcessFixture/BM_ProcessBigObjectPassedByCopy', 'BigObjectProcessFixture/BM_ProcessBigObjectPassedByConstRef'),
     ]
     
     labels = []

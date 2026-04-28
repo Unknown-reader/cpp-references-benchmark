@@ -3,6 +3,7 @@
 #include <string>
 #include <numeric>
 #include <cstddef>
+#include <optional>
 #include "cpp-reference-benchmark/copy_vs_ref.hpp"
 #include "cpp-reference-benchmark/BigObject.hpp"
 
@@ -23,7 +24,7 @@ static std::string create_string(std::size_t lenght) {
 
 // ---------- Бенчмарки для std::vector<int> ----------
 class SumVectorFixture : public benchmark::Fixture {
-    public:
+    protected:
         std::vector<int> input_vector;
 
         void SetUp(const ::benchmark::State& state) override {
@@ -58,7 +59,7 @@ BENCHMARK_REGISTER_F(SumVectorFixture, BM_SumVectorPassedByConstRef)
 
 // ---------- Бенчмарки для std::string (sso) ----------
 class ShortStrProcessFixture : public benchmark::Fixture {
-    public:
+    protected:
         std::string short_str;
 
         void SetUp(const benchmark::State& state) override {
@@ -92,12 +93,12 @@ BENCHMARK_REGISTER_F(ShortStrProcessFixture, BM_ProcessShortStrPassedByConstRef)
 
 // ---------- Бенчмарки для std::string (long) ----------
 class LongStrProcessFixture : public benchmark::Fixture {
-    public:
+    protected:
         std::string long_str;
 
-    void SetUp(const benchmark::State& state) override {
-        long_str = create_string(100'000);
-    }
+        void SetUp(const benchmark::State& state) override {
+            long_str = create_string(100'000);
+        }
 };
 
 BENCHMARK_DEFINE_F(LongStrProcessFixture, BM_ProcessLongStrPassedByCopy)
@@ -122,20 +123,31 @@ BENCHMARK_REGISTER_F(LongStrProcessFixture, BM_ProcessLongStrPassedByConstRef);
 
 
 // ---------- Бенчмарки для BigObject ----------
-static void BM_BigObjectCopy(benchmark::State& state) {
-    BigObject obj;
-    for (auto _ : state) {
-        long long sum = process_big_object_copy(obj);
-        benchmark::DoNotOptimize(sum);
-    }
-}
-BENCHMARK(BM_BigObjectCopy);
+class BigObjectProcessFixture : public benchmark::Fixture {
+    protected:
+        std::optional<BigObject> obj;
 
-static void BM_BigObjectConstRef(benchmark::State& state) {
-    BigObject obj;
+        void SetUp(const benchmark::State& state) override {
+            obj.emplace();
+        }
+};
+
+BENCHMARK_DEFINE_F(BigObjectProcessFixture, BM_ProcessBigObjectPassedByCopy)
+(benchmark::State& state) {
     for (auto _ : state) {
-        long long sum = process_big_object_const_ref(obj);
+        long long sum = process_big_object_copy(obj.value());
         benchmark::DoNotOptimize(sum);
     }
 }
-BENCHMARK(BM_BigObjectConstRef);
+
+BENCHMARK_DEFINE_F(BigObjectProcessFixture, BM_ProcessBigObjectPassedByConstRef)
+(benchmark::State& state) {
+    for (auto _ : state) {
+        long long sum = process_big_object_const_ref(obj.value());
+        benchmark::DoNotOptimize(sum);
+    }
+}
+
+BENCHMARK_REGISTER_F(BigObjectProcessFixture, BM_ProcessBigObjectPassedByCopy);
+
+BENCHMARK_REGISTER_F(BigObjectProcessFixture, BM_ProcessBigObjectPassedByConstRef);
