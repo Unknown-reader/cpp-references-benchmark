@@ -11,14 +11,14 @@ import numpy as np
 from pathlib import Path
 
 def parse_benchmark_output(output_text):
-    """Извлекает имя бенчмарка и CPU time из текстового вывода."""
     results = {}
-    pattern = r'^(\S+)\s+(\d+)\s+ns\s+(\d+)\s+ns'
+
+    pattern = r'^\s*(\S+)\s+(\d+(?:\.\d+)?)\s+ns\s+(\d+(?:\.\d+)?)\s+ns'
     for line in output_text.splitlines():
         match = re.match(pattern, line)
         if match:
             name = match.group(1)
-            cpu_time = float(match.group(2))
+            cpu_time = float(match.group(3))
             results[name] = cpu_time
     return results
 
