@@ -14,7 +14,6 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_SOURCES
     test_copy_vs_ref.cpp
-    test_return_ref.cpp
 )
 
 add_executable(run_tests ${TEST_SOURCES})

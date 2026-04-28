@@ -1,6 +1,5 @@
 set(LIB_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/copy_vs_ref.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/return_ref.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BigObject.cpp
 )
 
